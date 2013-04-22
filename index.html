@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Responsive Tables</title>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+	<style>
+
+	body{
+		margin: 10px;
+	}
+
+	.responsive-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 12px;
+	}
+
+	.responsive-table th,
+	.responsive-table td {
+		padding: 5px 10px;
+		border: 1px #ddd solid;
+		vertical-align: top;
+	 }
+	.responsive-table th {
+		background: #eee;
+	}
+
+	.responsive-table tbody{
+		font-size: 0;
+	}
+
+	.responsive-table tbody td{
+		font-size: 12px;
+	}
+
+
+	@media only screen and (max-width: 40em) { /*640*/
+
+		.responsive-table {
+			display: block;
+			position: relative;
+			width: 100%;
+		}
+		.responsive-table thead {
+			display: block;
+			float: left;
+			text-align: left;
+			width: 20%;
+		}
+		.responsive-table tbody {
+			display: block;
+			width: auto;
+			position: relative;
+			overflow-x: auto;
+			white-space: nowrap;
+		}
+		.responsive-table thead tr {
+			display: block;
+		}
+		.responsive-table th {
+			display: block;
+		}
+		.responsive-table tbody tr {
+			display: inline-block;
+			vertical-align: top;
+		}
+		.responsive-table td {
+			display: block;
+			max-width: 200px;
+		}
+
+
+		.responsive-table .tdwrap{
+			white-space: normal;
+			max-width: 120px;
+		}
+
+
+	}
+
+	</style>
+
+
+ </head>
+<body>
+
+
+	<table class="responsive-table">
+      <thead class="header">
+        <tr>
+          <th>
+            If you...</th>
+          <th>
+            We can help by...</th>
+          <th>
+
+            Why us?</th>
+        </tr>
+        </thead>
+          <tbody>
+            <tr>
+              <td>
+
+                Have a large website and find that it is no longer meeting your
+                business or customer needs then...</td>
+              <td>
+
+                <p >Reviewing
+                  the performance of your website and identifying gaps or lost
+                  opportunities. </p>
+                <br />
+                We can also craft a new website strategy that includes information
+                architecture, content strategy, apps and digital marketing.</td>
+              <td>
+
+                <p >We
+                  have the experience and expertise in conducting user research,
+                  business audits and competitor audits to identify gaps or
+                  opportunities in your business.</p>
+                <br />
+                We have extensive knowledge in organizing large volumes of
+                information. In fact, we’ve also written a book on it: <a href="http://www.pebbleroad.com/perspectives/organizing-digital-information-for-others"
+                  title="Organizing Information for Others">Organizing
+                  Digital Information for Others</a>.</td>
+            </tr>
+            <tr>
+              <td>
+
+                Want to explore how your company can play in the mobile space
+                then...</td>
+              <td>
+
+                Identifying opportunities in the mobile space. We can also help
+                craft a mobile strategy that includes mobile websites, apps and
+                mobile marketing.</td>
+              <td>
+
+                We’ve designed apps for different purposes, from e-commerce stores
+                to administrative tasks.</td>
+            </tr>
+            <tr>
+              <td>
+
+                Want improve business performance by connecting your employees over
+                an intranet so that they can share and collaborate more effectively
+                then... </td>
+              <td>
+
+                Reviewing and identifying opportunities that can be exploited in an
+                intranet environment. We can also craft an intranet design strategy
+                that includes employee self-services, staff directory, collaboration
+                spaces and search.</td>
+              <td>
+
+                <p >We
+                  have designed many intranets over the years. Some have won awards.
+                </p>
+                <br />
+                We have also written a popular book on intranets: <a href="http://www.pebbleroad.com/perspectives/managers-guidebook-on-intranet-redesign-projects"
+                  title="Manager's Guidebook on Intranet Redesign Projects">Manager’s
+                  Guidebook on Intranet Redesign Projects</a>.</td>
+            </tr>
+            <tr>
+              <td>
+
+                See knowledge and expertise being wasted and employees re-inventing
+                the wheel many times over then...</td>
+              <td>
+
+                Identifying opportunities to grow and support communities of
+                practices, or CoPs.</td>
+              <td>
+
+                We have helped large companies start and grow their communities of
+                practices, including one for a team of technical experts.</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>
+	(function($, window, undefined){
+
+		 $.mobileTable = function(el, options){
+        // To avoid scope issues, use 'base' instead of 'this'
+        // to reference this class from internal events and functions.
+        var base = this;
+
+        // Access to jQuery and DOM versions of element
+        base.$el = $(el);
+        base.el = el;
+
+        // Add a reverse reference to the DOM object
+        base.$el.data("mobileTable", base);
+
+        base.init = function(){
+            base.options = $.extend({},$.mobileTable.defaultOptions, options);
+
+            // Put your initialization code here
+
+            var $tbody = base.$el.find('tbody'),
+            		$thead = base.$el.find('thead'),
+            		$tr = $tbody.find('tr'),
+            		$td = $tbody.find('td'),
+            		$th = $thead.find('th');
+
+            $td.each(function(){
+            	$(this).wrapInner('<div class="tdwrap" />');
+            })
+
+            $th.each(function(i, e){
+            	var maxHeight = 0, arr = [];
+            	$tr.each(function(){
+            		var td = $(this).find('td').eq(i),
+            				h = td.outerHeight();
+            		arr.push(td);
+            		if(h > maxHeight) maxHeight = h;
+
+            	});
+            	console.log(maxHeight);
+
+            	$.each(arr, function(i, e){
+            		e.height(maxHeight);
+            	});
+
+            	$(this).height(maxHeight);
+
+            });
+        };
+
+
+
+        // Run initializer
+        base.init();
+    };
+
+    $.mobileTable.defaultOptions = {
+
+    };
+
+    $.fn.mobileTable = function(options){
+        return this.each(function(){
+            (new $.mobileTable(this, options));
+        });
+    };
+
+
+	})(jQuery, window);
+	</script>
+
+	<script>
+	$(function(){
+
+		$('.responsive-table').mobileTable();
+
+	});</script>
+
+</body>
+</html>
