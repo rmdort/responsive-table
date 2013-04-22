@@ -234,7 +234,11 @@
 
 
         // Run initializer
-        base.init();
+        var IS_MOBILE = (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent);
+        if(IS_MOBILE){
+        	base.init();
+        }
+
     };
 
     $.mobileTable.defaultOptions = {
